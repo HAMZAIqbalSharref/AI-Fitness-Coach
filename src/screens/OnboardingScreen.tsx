@@ -5,16 +5,14 @@ import {
   FlatList,
   Animated,
   TouchableOpacity,
-  ViewToken
+  ViewToken,
+  Dimensions,
 } from "react-native";
-import { styled } from "nativewind";
 import { useRouter } from "expo-router";
 import { onboardingSlides } from "../data/onboarding-data";
 import { Button } from "../components/ui";
 
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledTouchableOpacity = styled(TouchableOpacity);
+const { width } = Dimensions.get("window");
 
 export const OnboardingScreen: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,87 +28,104 @@ export const OnboardingScreen: React.FC = () => {
     }
   ).current;
 
-  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+  const viewConfig = useRef({
+    viewAreaCoveragePercentThreshold: 50,
+  }).current;
 
   const scrollToNext = () => {
     if (currentIndex < onboardingSlides.length - 1) {
-      slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
+      slidesRef.current?.scrollToIndex({
+        index: currentIndex + 1,
+      });
     } else {
-      router.replace("/(auth)/signin");
+      router.replace("/signin");
     }
   };
 
   const renderSlide = ({ item }: { item: (typeof onboardingSlides)[0] }) => {
     return (
-      <StyledView className="flex-1 justify-center items-center px-6">
-        <StyledView className="w-64 h-64 bg-primary-600 rounded-full mb-10 items-center justify-center">
-          <StyledText className="text-6xl">💪</StyledText>
-        </StyledView>
-        <StyledText className="text-3xl font-bold text-white text-center mb-4">
+      <View
+        style={{ width }}
+        className="flex-1 justify-center items-center px-8"
+      >
+        <View className="w-64 h-64 rounded-full bg-primary-600 items-center justify-center mb-12">
+          <Text className="text-7xl">💪</Text>
+        </View>
+
+        <Text className="text-white text-4xl font-bold text-center mb-5">
           {item.title}
-        </StyledText>
-        <StyledText className="text-lg text-gray-400 text-center px-4">
+        </Text>
+
+        <Text className="text-gray-400 text-lg text-center leading-7">
           {item.description}
-        </StyledText>
-      </StyledView>
+        </Text>
+      </View>
     );
   };
 
   const renderDots = () => {
     return (
-      <StyledView className="flex-row justify-center mb-10">
+      <View className="flex-row justify-center items-center mb-8">
         {onboardingSlides.map((_, i) => {
           const opacity = scrollX.interpolate({
-            inputRange: [i - 1, i, i + 1],
+            inputRange: [(i - 1) * width, i * width, (i + 1) * width],
             outputRange: [0.3, 1, 0.3],
-            extrapolate: "clamp"
+            extrapolate: "clamp",
           });
-          const width = scrollX.interpolate({
-            inputRange: [i - 1, i, i + 1],
+
+          const dotWidth = scrollX.interpolate({
+            inputRange: [(i - 1) * width, i * width, (i + 1) * width],
             outputRange: [8, 24, 8],
-            extrapolate: "clamp"
+            extrapolate: "clamp",
           });
+
           return (
             <Animated.View
               key={i}
+              style={{
+                width: dotWidth,
+                opacity,
+              }}
               className="h-2 rounded-full bg-primary-600 mx-1"
-              style={{ opacity, width }}
             />
           );
         })}
-      </StyledView>
+      </View>
     );
   };
 
   return (
-    <StyledView className="flex-1 bg-dark-300">
-      <StyledTouchableOpacity
-        className="absolute top-12 right-6 z-10"
-        onPress={() => router.replace("/(auth)/signin")}
+    <View className="flex-1 bg-dark-300">
+      <TouchableOpacity
+        className="absolute top-14 right-6 z-10"
+        onPress={() => router.replace("/signin")}
       >
-        <StyledText className="text-primary-600 font-medium">Skip</StyledText>
-      </StyledTouchableOpacity>
+        <Text className="text-primary-600 text-base font-semibold">
+          Skip
+        </Text>
+      </TouchableOpacity>
 
       <FlatList
         data={onboardingSlides}
         renderItem={renderSlide}
         keyExtractor={(item) => item.id.toString()}
         horizontal
-        showsHorizontalScrollIndicator={false}
         pagingEnabled
         bounces={false}
+        showsHorizontalScrollIndicator={false}
+        ref={slidesRef as any}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false }
         )}
         onViewableItemsChanged={viewableItemsChanged}
         viewabilityConfig={viewConfig}
-        ref={slidesRef as any}
+        scrollEventThrottle={32}
       />
 
       {renderDots()}
 
-      <StyledView className="px-6 pb-12">
+      <View className="px-6 pb-12">
         <Button
           title={
             currentIndex === onboardingSlides.length - 1
@@ -119,7 +134,7 @@ export const OnboardingScreen: React.FC = () => {
           }
           onPress={scrollToNext}
         />
-      </StyledView>
-    </StyledView>
+      </View>
+    </View>
   );
 };

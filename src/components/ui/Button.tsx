@@ -5,10 +5,6 @@ import {
   ActivityIndicator,
   TouchableOpacityProps
 } from "react-native";
-import { styled } from "nativewind";
-
-const StyledTouchableOpacity = styled(TouchableOpacity);
-const StyledText = styled(Text);
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
@@ -25,7 +21,6 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = "rounded-lg items-center justify-center flex-row";
   const sizeStyles = {
     sm: "px-4 py-2",
     md: "px-6 py-3",
@@ -38,8 +33,8 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <StyledTouchableOpacity
-      className={`${baseStyles} ${sizeStyles[size]} ${
+    <TouchableOpacity
+      className={`rounded-lg items-center justify-center flex-row ${sizeStyles[size]} ${
         variantStyles[variant]
       } ${disabled ? "opacity-50" : ""}`}
       disabled={disabled || loading}
@@ -52,11 +47,11 @@ export const Button: React.FC<ButtonProps> = ({
           className="mr-2"
         />
       )}
-      <StyledText
-        className={`font-semibold text-${variant === "outline" ? "primary-600" : "white"}`}
+      <Text
+        className={`font-semibold ${variant === "outline" ? "text-primary-600" : "text-white"}`}
       >
         {title}
-      </StyledText>
-    </StyledTouchableOpacity>
+      </Text>
+    </TouchableOpacity>
   );
 };

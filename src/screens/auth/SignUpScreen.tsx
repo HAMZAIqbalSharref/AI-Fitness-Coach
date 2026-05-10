@@ -1,18 +1,11 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { styled } from "nativewind";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "expo-router";
 import { Button, Input } from "../../components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { supabase } from "../../services/supabase";
+import { z } from "zod";  
 import { useAuthStore } from "../../store/auth-store";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledTouchableOpacity = styled(TouchableOpacity);
-const StyledScrollView = styled(ScrollView);
 
 const signUpSchema = z.object({
   full_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -45,50 +38,40 @@ export const SignUpScreen: React.FC = () => {
   });
 
   const onSubmit = async (data: SignUpFormData) => {
-    try {
-      const { data: authData, error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            full_name: data.full_name
-          }
-        }
-      });
+  try {
+    console.log("Fake sign up:", data);
 
-      if (error) throw error;
+    login({
+      id: "temp-user",
+      email: data.email,
+      full_name: data.full_name,
+      avatar_url: "",
+      created_at: new Date().toISOString()
+    });
 
-      if (authData.user) {
-        login({
-          id: authData.user.id,
-          email: authData.user.email || "",
-          full_name: data.full_name,
-          created_at: authData.user.created_at
-        });
-        router.replace("/(tabs)/home");
-      }
-    } catch (error) {
-      console.error("Sign up error:", error);
-    }
-  };
+    router.replace("/home");
+  } catch (error) {
+    console.error("Sign up error:", error);
+  }
+};
 
   return (
-    <StyledView className="flex-1 bg-dark-300">
-      <StyledScrollView
+    <View className="flex-1 bg-dark-300">
+      <ScrollView
         className="flex-1 px-6"
         showsVerticalScrollIndicator={false}
       >
-        <StyledView className="items-center mt-10 mb-8">
-          <StyledView className="w-20 h-20 bg-primary-600 rounded-2xl items-center justify-center mb-4">
-            <StyledText className="text-3xl">💪</StyledText>
-          </StyledView>
-          <StyledText className="text-3xl font-bold text-white">
+        <View className="items-center mt-10 mb-8">
+          <View className="w-20 h-20 bg-primary-600 rounded-2xl items-center justify-center mb-4">
+            <Text className="text-3xl">💪</Text>
+          </View>
+          <Text className="text-3xl font-bold text-white">
             Create Account
-          </StyledText>
-          <StyledText className="text-gray-400 mt-2">
+          </Text>
+          <Text className="text-gray-400 mt-2">
             Start your fitness journey today
-          </StyledText>
-        </StyledView>
+          </Text>
+        </View>
 
         <Controller
           control={control}
@@ -155,25 +138,25 @@ export const SignUpScreen: React.FC = () => {
           )}
         />
 
-        <StyledView className="mt-4 mb-8">
+        <View className="mt-4 mb-8">
           <Button
             title="Sign Up"
             onPress={handleSubmit(onSubmit)}
             loading={isSubmitting}
           />
-        </StyledView>
+        </View>
 
-        <StyledView className="flex-row justify-center mb-10">
-          <StyledText className="text-gray-400">
+        <View className="flex-row justify-center mb-10">
+          <Text className="text-gray-400">
             Already have an account?{" "}
-          </StyledText>
-          <StyledTouchableOpacity onPress={() => router.push("/(auth)/signin")}>
-            <StyledText className="text-primary-600 font-semibold">
+          </Text>
+          <TouchableOpacity onPress={() => router.push("/signin")}>
+            <Text className="text-primary-600 font-semibold">
               Sign In
-            </StyledText>
-          </StyledTouchableOpacity>
-        </StyledView>
-      </StyledScrollView>
-    </StyledView>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
