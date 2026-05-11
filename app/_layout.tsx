@@ -20,11 +20,12 @@ export default function RootLayout() {
             <Stack.Screen name="index" />
             <Stack.Screen name="signin" />
             <Stack.Screen name="signup" />
+            <Stack.Screen name="onboarding" />
           </>
         ) : (
-          <Stack.Screen name="home" />
+          <Stack.Screen name="(tabs)" />
         )}
       </Stack>
     </QueryClientProvider>
   );
-}
+} 

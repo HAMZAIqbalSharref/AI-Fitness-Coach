@@ -5,17 +5,13 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "types": [""],
-    "ignoreDeprecations": "6.0"
+    "types": ["nativewind/types"]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "nativewind-env.d.ts",
-    "src", "global.d.ts"
+    "nativewind-env.d.ts"
   ]
 }
