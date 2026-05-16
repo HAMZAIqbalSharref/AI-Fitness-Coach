@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useAppStore } from "../store/app-store";
 import {
   View,
   Text,
@@ -19,6 +20,7 @@ export const OnboardingScreen: React.FC = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const slidesRef = useRef<FlatList>(null);
   const router = useRouter();
+  const { setHasSeenOnboarding } = useAppStore();
 
   const viewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -32,15 +34,17 @@ export const OnboardingScreen: React.FC = () => {
     viewAreaCoveragePercentThreshold: 50,
   }).current;
 
-  const scrollToNext = () => {
-    if (currentIndex < onboardingSlides.length - 1) {
-      slidesRef.current?.scrollToIndex({
-        index: currentIndex + 1,
-      });
-    } else {
-      router.replace("/signin");
-    }
-  };
+  const scrollToNext = async () => {
+  if (currentIndex < onboardingSlides.length - 1) {
+    slidesRef.current?.scrollToIndex({
+      index: currentIndex + 1,
+    });
+  } else {
+    await setHasSeenOnboarding();
+
+    router.replace("/signin");
+  }
+};
 
   const renderSlide = ({ item }: { item: (typeof onboardingSlides)[0] }) => {
     return (
@@ -98,7 +102,10 @@ export const OnboardingScreen: React.FC = () => {
     <View className="flex-1 bg-dark-300">
       <TouchableOpacity
         className="absolute top-14 right-6 z-10"
-        onPress={() => router.replace("/signin")}
+        onPress={async () => {
+        await setHasSeenOnboarding();
+        router.replace("/signin");
+}}
       >
         <Text className="text-primary-600 text-base font-semibold">
           Skip

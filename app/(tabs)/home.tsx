@@ -1,94 +1,252 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { useAuthStore } from "../../src/store/auth-store";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, ScrollView } from "react-native";
 
-const WORKOUT_DATA = {
-  title: "Upper Body Strength",
-  duration: "45 min",
-  level: "Intermediate",
-  muscleGroups: ["Chest", "Back", "Shoulders"]
-};
+const completion = 69;
 
-const WEEKLY_PROGRESS = {
+const weeklyStats = {
   streak: 7,
-  workouts: 18
+  workouts: 18,
 };
 
-const RECENT_ACTIVITY = {
-  lastWorkout: "Push Pull Legs - 2 days ago",
-  achievement: "Week Streak 🔥"
-};
+const recentActivity = [
+  {
+    label: "Last Workout",
+    value: "Push Pull Legs - 2 days ago",
+  },
+  {
+    label: "Achievement",
+    value: "Week Streak 🔥",
+  },
+];
 
-export default function DashboardScreen() {
-  const { user } = useAuthStore();
-
+export default function HomeScreen() {
   return (
-    <ScrollView className="flex-1 bg-dark-300" showsVerticalScrollIndicator={false}>
-      <View className="px-6 pt-12 pb-32">
+    <ScrollView
+      className="flex-1 bg-black"
+      showsVerticalScrollIndicator={false}
+    >
+      <View className="px-6 pt-12 pb-24">
+
         {/* Header */}
-        <View className="flex-row justify-between items-center mb-8">
+        <View className="flex-row justify-between items-start mb-8">
+
           <View>
-            <Text className="text-gray-400 text-base">Welcome back,</Text>
-            <Text className="text-3xl font-bold text-white mt-1">
-              {user?.full_name || "Athlete"}
+            <Text className="text-gray-400 text-lg">
+              Welcome back,
             </Text>
-            <Text className="text-gray-500 text-sm mt-1">
+
+            <Text className="text-white text-4xl font-bold mt-1">
+              Hamza
+            </Text>
+
+            <Text className="text-gray-500 text-base mt-1">
               Ready to crush your goals today?
             </Text>
           </View>
-          <View className="w-14 h-14 bg-primary-600 rounded-full items-center justify-center">
-            <Text className="text-2xl">👤</Text>
+
+          <View className="w-16 h-16 rounded-full bg-primary-600 items-center justify-center">
+            <Text className="text-3xl">
+              👤
+            </Text>
           </View>
+
         </View>
 
-        {/* Today's Workout Summary */}
-        <LinearGradient
-          colors={["#f97316", "#ea580c"]}
-          start={[0, 0]}
-          end={[1, 1]}
-          className="rounded-2xl p-5 mb-6"
-        >
-          <Text className="text-white text-lg font-medium mb-2">Today's Workout</Text>
-          <Text className="text-white text-2xl font-bold">{WORKOUT_DATA.title}</Text>
-          <View className="flex-row mt-3">
-            <View className="bg-white/20 rounded-full px-3 py-1 mr-2">
-              <Text className="text-white">{WORKOUT_DATA.duration}</Text>
-            </View>
-            <View className="bg-white/20 rounded-full px-3 py-1">
-              <Text className="text-white">{WORKOUT_DATA.level}</Text>
-            </View>
-          </View>
-        </LinearGradient>
+        {/* Main Dashboard Container */}
+        <View className="pt-2">
 
-        {/* Weekly Progress Preview */}
-        <View className="bg-dark-200 rounded-2xl p-5 mb-6">
-          <Text className="text-white text-lg font-semibold mb-4">This Week</Text>
-          <View className="flex-row justify-between">
-            <View className="items-center">
-              <Text className="text-primary-600 text-2xl font-bold">{WEEKLY_PROGRESS.streak}</Text>
-              <Text className="text-gray-400 text-xs">Day Streak</Text>
-            </View>
-            <View className="items-center">
-              <Text className="text-white text-2xl font-bold">{WEEKLY_PROGRESS.workouts}</Text>
-              <Text className="text-gray-400 text-xs">Workouts</Text>
-            </View>
+          {/* App Name */}
+          <View className="mb-8">
+            <Text className="text-white text-5xl font-bold">
+              Fitness
+            </Text>
+
+            <Text className="text-primary-600 text-2xl font-semibold -mt-1">
+              mobile app
+            </Text>
           </View>
+
+          {/* Progress Circle */}
+          <View className="items-center mb-8">
+
+            <View className="w-48 h-48 rounded-full border-[12px] border-dark-100 items-center justify-center">
+              
+              <View className="absolute w-48 h-48 rounded-full border-[12px] border-primary-600 border-r-transparent border-b-transparent rotate-45" />
+
+              <Text className="text-gray-400 text-base">
+                TODAY
+              </Text>
+
+              <Text className="text-white text-5xl font-bold mt-1">
+                {completion}%
+              </Text>
+
+              <Text className="text-gray-500 mt-1">
+                completed
+              </Text>
+            </View>
+
+          </View>
+
+          {/* Progress Bars */}
+          <View className="mb-8">
+
+            {/* Workout */}
+            <View className="mb-4">
+
+              <View className="flex-row justify-between mb-2">
+                <Text className="text-gray-400 text-sm">
+                  Workout
+                </Text>
+
+                <Text className="text-gray-500 text-sm">
+                  75/100
+                </Text>
+              </View>
+
+              <View className="bg-dark-100 h-2 rounded-full overflow-hidden">
+                <View className="bg-primary-600 h-full w-[75%] rounded-full" />
+              </View>
+
+            </View>
+
+            {/* Calories */}
+            <View className="mb-4">
+
+              <View className="flex-row justify-between mb-2">
+                <Text className="text-gray-400 text-sm">
+                  Calories
+                </Text>
+
+                <Text className="text-gray-500 text-sm">
+                  53/100
+                </Text>
+              </View>
+
+              <View className="bg-dark-100 h-2 rounded-full overflow-hidden">
+                <View className="bg-yellow-400 h-full w-[53%] rounded-full" />
+              </View>
+
+            </View>
+
+            {/* Water */}
+            <View>
+
+              <View className="flex-row justify-between mb-2">
+                <Text className="text-gray-400 text-sm">
+                  Water Intake
+                </Text>
+
+                <Text className="text-gray-500 text-sm">
+                  88/100
+                </Text>
+              </View>
+
+              <View className="bg-dark-100 h-2 rounded-full overflow-hidden">
+                <View className="bg-blue-400 h-full w-[88%] rounded-full" />
+              </View>
+
+            </View>
+
+          </View>
+
+          {/* Divider */}
+
+
+          {/* Today's Workout */}
+          <View className="mb-8">
+
+            <Text className="text-white text-2xl font-bold mb-3">
+              Today's Workout
+            </Text>
+
+            <Text className="text-primary-600 text-3xl font-bold mb-4">
+              Upper Body Strength
+            </Text>
+
+            <View className="flex-row">
+
+              <View className="bg-primary-600/20 px-4 py-2 rounded-full mr-3">
+                <Text className="text-white text-sm">
+                  45 min
+                </Text>
+              </View>
+
+              <View className="bg-primary-600/20 px-4 py-2 rounded-full">
+                <Text className="text-white text-sm">
+                  Intermediate
+                </Text>
+              </View>
+
+            </View>
+
+          </View>
+
+          {/* Divider */}
+
+          {/* This Week */}
+          <View className="mb-8">
+
+            <Text className="text-white text-2xl font-bold mb-5">
+              This Week
+            </Text>
+
+            <View className="flex-row justify-between">
+
+              <View>
+                <Text className="text-primary-600 text-4xl font-bold">
+                  {weeklyStats.streak}
+                </Text>
+
+                <Text className="text-gray-500 text-base mt-1">
+                  Day Streak
+                </Text>
+              </View>
+
+              <View className="items-end">
+                <Text className="text-white text-4xl font-bold">
+                  {weeklyStats.workouts}
+                </Text>
+
+                <Text className="text-gray-500 text-base mt-1">
+                  Workouts
+                </Text>
+              </View>
+
+            </View>
+
+          </View>
+
+          {/* Divider */}      
+
+          {/* Recent Activity */}
+          <View>
+
+            <Text className="text-white text-2xl font-bold mb-5">
+              Recent Activity
+            </Text>
+
+            {recentActivity.map((item, index) => (
+              <View
+                key={index}
+                className="flex-row justify-between items-center mb-4"
+              >
+                <Text className="text-gray-500 text-base">
+                  {item.label}
+                </Text>
+
+                <Text className="text-white text-base font-medium text-right flex-1 ml-4">
+                  {item.value}
+                </Text>
+              </View>
+            ))}
+
+          </View>
+
         </View>
 
-        {/* Recent Activity */}
-        <View className="bg-dark-200 rounded-2xl p-5 mb-8">
-          <Text className="text-white text-lg font-semibold mb-4">Recent Activity</Text>
-          <View className="flex-row justify-between items-center mb-3">
-            <Text className="text-gray-400">Last Workout</Text>
-            <Text className="text-white">{RECENT_ACTIVITY.lastWorkout}</Text>
-          </View>
-          <View className="flex-row justify-between items-center">
-            <Text className="text-gray-400">Achievement</Text>
-            <Text className="text-white">{RECENT_ACTIVITY.achievement}</Text>
-          </View>
-        </View>
       </View>
+  
     </ScrollView>
   );
 }

@@ -6,7 +6,7 @@ import { useAuthStore } from "../src/store/auth-store";
 import { LoadingScreen } from "../src/components/ui";
 
 export default function RootLayout() {
-  const { user, isLoading } = useAuthStore();
+  const { isLoading } = useAuthStore();
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -15,17 +15,12 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerShown: false }}>
-        {!user ? (
-          <>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="signin" />
-            <Stack.Screen name="signup" />
-            <Stack.Screen name="onboarding" />
-          </>
-        ) : (
-          <Stack.Screen name="(tabs)" />
-        )}
+        <Stack.Screen name="index" />
+        <Stack.Screen name="signin" />
+        <Stack.Screen name="signup" />
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="(tabs)" />
       </Stack>
     </QueryClientProvider>
   );
-} 
+}

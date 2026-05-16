@@ -22,7 +22,7 @@ const ACHIEVEMENTS = [
 export default function ProgressScreen() {
   return (
     <ScrollView className="flex-1 bg-dark-300" showsVerticalScrollIndicator={false}>
-      <View className="px-6 pt-12 pb-32">
+      <View className="px-6 pt-12 pb-24">
         <Text className="text-2xl font-bold text-white mb-6">Progress</Text>
 
         {/* Weight Tracking */}
@@ -85,6 +85,7 @@ export default function ProgressScreen() {
           ))}
         </View>
       </View>
+    
     </ScrollView>
   );
 }

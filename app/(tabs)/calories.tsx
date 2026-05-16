@@ -28,7 +28,7 @@ export default function CaloriesScreen() {
 
   return (
     <ScrollView className="flex-1 bg-dark-300" showsVerticalScrollIndicator={false}>
-      <View className="px-6 pt-12 pb-32">
+      <View className="px-6 pt-12 pb-24">
         <Text className="text-2xl font-bold text-white mb-6">Calories</Text>
 
         <View className="bg-dark-200 rounded-xl p-5 mb-6">
@@ -87,11 +87,12 @@ export default function CaloriesScreen() {
             <Text className="text-primary-600 font-bold">{meal.calories} kcal</Text>
           </View>
         ))}
-
+        
         <TouchableOpacity className="bg-primary-600 rounded-xl p-4 items-center mt-2">
           <Text className="text-white font-bold text-lg">+ Add Meal</Text>
         </TouchableOpacity>
       </View>
+    
     </ScrollView>
   );
 }
